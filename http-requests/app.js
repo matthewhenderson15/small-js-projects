@@ -1,20 +1,25 @@
-// Finalized code from Udemy course
+// Finalized code from Udemy course - using Star Wars API
 
-// Using Axios
+// Using Axios - improves on error codes in fetch
 
 
-// Using fetch 
-fetch('https://swapi.co/api/planetsuy21/')
-	.then((response) => {
-		if (!response.ok)
-			throw new Error(`Status Code Error: ${response.status}`);
+// Using fetch and chaining promises - refactored to simplify response logic
+const checkStatus = (res) => {
+    if (!res.ok)
+		throw new Error(`Status Code Error: ${res.status}`);
+    return res.json();
+}
 
-		response.json().then((data) => {
-			for (let planet of data.results) {
-				console.log(planet.name);
-			}
-		});
+fetch('https://swapi.dev/api/planets/')
+	.then(checkStatus)
+    .then((data) => {
+	    const filmURL = data.results[0].films[0];
+        return fetch(filmURL);
 	})
+    .then(checkStatus)
+    .then((data) => {
+        console.log(data.title);
+    })
 	.catch((err) => {
 		console.log('SOMETHING WENT WRONG WITH FETCH!');
 		console.log(err);
@@ -41,6 +46,6 @@ firstReq.addEventListener('load', function() {
 firstReq.addEventListener('error', (e) => {
 	console.log('ERROR!!!!!!');
 });
-firstReq.open('GET', 'https://swapi.co/api/planets/');
+firstReq.open('GET', 'https://swapi.dev/api/planets/', true);
 firstReq.send();
 console.log('Request Sent!');
