@@ -1,7 +1,25 @@
 // Finalized code from Udemy course - using Star Wars API
 
-// Using Axios - improves on error codes in fetch
+// Using Axios - improves on error codes in fetch and no need to parse JSON
+axios
+	.get('https://swapi.co/api/planets/')
+	.then((res) => {
+		console.log(res.data);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 
+// Example with a bad URL
+axios
+	.get('https://swapi.co/api/planetaslkjdaklsjds/')
+	.then((res) => {
+		console.log(res.data);
+	})
+	.catch((err) => {
+		console.log('IN CATCH CALLBACK');
+        console.log(err);
+	});
 
 // Using fetch and chaining promises - refactored to simplify response logic
 const checkStatus = (res) => {
